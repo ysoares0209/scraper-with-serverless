@@ -1,0 +1,19 @@
+{
+  "name": "scraper-with-serverless",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "deploy:dev": "serverless deploy --stage dev --verbose"
+  },
+  "dependencies": {
+    "aws-lambda": "^1.0.7",
+    "puppeteer": "^24.1.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.147",
+    "ts-node": "^10.9.2"
+  }
+}
