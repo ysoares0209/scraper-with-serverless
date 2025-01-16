@@ -17,15 +17,16 @@ export const handler: Handler = async (event: Event, context: Context): Promise<
     puppeteer.use(stealthPlugin());
     console.log("Loaded puppeteer & plugins");
 
+    const chromePath =
+      ".cache/puppeteer/chrome-headless-shell/linux-132.0.6834.83/chrome-headless-shell-linux64/chrome-headless-shell";
     const launchOptions: LaunchOptions = context.functionName
       ? {
           headless: true,
-          executablePath: puppeteer.executablePath(),
+          executablePath: chromePath,
           args: [
             "--no-sandbox",
             "--disable-setuid-sandbox",
             "--disable-dev-shm-usage",
-            "--disable-gpu",
             "--single-process",
             "--incognito",
             "--disable-client-side-phishing-detection",
@@ -41,7 +42,7 @@ export const handler: Handler = async (event: Event, context: Context): Promise<
     const browser: Browser = await puppeteer.launch(launchOptions);
     const page: Page = await browser.newPage();
     console.log("Opened browser & page");
-    await page.goto(website, { timeout: 15000, waitUntil: "networkidle2" });
+    await page.goto(website, { timeout: 30000, waitUntil: "networkidle2" });
     console.log("Navigated to website");
     await new Promise((resolve) => setTimeout(resolve, 5000));
     console.log(await page.content());
