@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "local": "ts-node local.ts",
     "deploy:dev": "serverless deploy --stage dev --verbose"
   },
   "dependencies": {
