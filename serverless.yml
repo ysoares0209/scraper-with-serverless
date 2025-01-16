@@ -10,7 +10,7 @@ provider:
 
 functions:
   scraper:
-    memorySize: 512
+    memorySize: 2048
     timeout: 900
     image:
       uri: 381491857310.dkr.ecr.us-east-1.amazonaws.com/scraper:latest
