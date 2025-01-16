@@ -1,19 +1,21 @@
-import { Callback, Context, Handler } from "aws-lambda";
+import { Context, Handler } from "aws-lambda";
 import { Browser, Page, LaunchOptions } from "puppeteer";
 import { PuppeteerExtra } from "puppeteer-extra";
 
-interface Event {}
+interface Event {
+  website: string;
+}
 
-export const handler: Handler = async (
-  event: Event,
-  context: Context,
-  callback: Callback
-): Promise<any> => {
+export const handler: Handler = async (event: Event, context: Context): Promise<any> => {
   try {
     console.log("event:", event);
+    console.log("context:", context);
+    const website = event.website;
+
     const puppeteer: PuppeteerExtra = require("puppeteer-extra");
     const stealthPlugin = require("puppeteer-extra-plugin-stealth");
     puppeteer.use(stealthPlugin());
+    console.log("Loaded puppeteer & plugins");
 
     const launchOptions: LaunchOptions = context.functionName
       ? {
@@ -35,9 +37,12 @@ export const handler: Handler = async (
           executablePath: puppeteer.executablePath(),
         };
 
+    console.log("Loaded launch options");
     const browser: Browser = await puppeteer.launch(launchOptions);
     const page: Page = await browser.newPage();
-    await page.goto("https://www.example.com");
+    console.log("Opened browser & page");
+    await page.goto(website, { timeout: 15000, waitUntil: "networkidle2" });
+    console.log("Navigated to website");
     await new Promise((resolve) => setTimeout(resolve, 5000));
     console.log(await page.content());
     await browser.close();
@@ -46,4 +51,3 @@ export const handler: Handler = async (
     return e;
   }
 };
-
